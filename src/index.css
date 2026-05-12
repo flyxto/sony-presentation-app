@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --vault-bg: #0e0c09;
+  --vault-surface: #1a1610;
+  --vault-card: #221e14;
+  --vault-border: #2e281c;
+  --vault-accent: #c9a84c;
+  --vault-text: #e8dfc8;
+  --vault-muted: #7a7060;
+}
+
+@theme inline {
+  --color-background: var(--vault-bg);
+  --color-foreground: var(--vault-text);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  background-color: var(--vault-bg);
+  color: var(--vault-text);
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.vault-input {
+  background: var(--vault-surface);
+  border: 1px solid var(--vault-border);
+  color: var(--vault-text);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  width: 100%;
+}
+
+.vault-btn-primary {
+  background: var(--vault-accent);
+  color: var(--vault-bg);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  border: none;
+}
+.vault-btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.vault-btn-secondary {
+  background: var(--vault-surface);
+  color: var(--vault-text);
+  border: 1px solid var(--vault-border);
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
