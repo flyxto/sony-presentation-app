@@ -6,9 +6,9 @@ declare global {
   interface Window {
     electronAPI: {
       selectFolder: () => Promise<string | null>;
-      downloadImages: (params: { folderPath: string; username: string; images: any[] }) => Promise<any[]>;
+      downloadImages: (params: { folderPath: string; fullName: string; images: any[] }) => Promise<any[]>;
       getConfig: () => Promise<any>;
-      getLocalImages: (params: { folderPath: string; username: string }) => Promise<any[]>;
+      getLocalImages: (params: { folderPath: string; fullName: string }) => Promise<any[]>;
       getUsers: () => Promise<any[]>;
       getImages: (params: { userId: string }) => Promise<any[]>;
       setSaveFolder: (folderPath: string) => Promise<any>;

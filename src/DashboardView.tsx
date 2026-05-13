@@ -3,7 +3,7 @@ import { Users, MonitorPlay, Search, RefreshCw, ServerOff, ChevronLeft, ChevronR
 
 interface User {
   _id: string;
-  username: string;
+  fullName: string;
 }
 
 interface Image {
@@ -51,7 +51,7 @@ export default function DashboardView() {
     if (!window.electronAPI) return;
     const localFiles = await window.electronAPI.getLocalImages({
       folderPath: folder,
-      username: user.username
+      fullName: user.fullName
     });
     setImages(localFiles);
     setSyncStatus('idle');
@@ -73,7 +73,7 @@ export default function DashboardView() {
       if (window.electronAPI) {
         await window.electronAPI.downloadImages({
           folderPath: config.saveFolder,
-          username: selectedUser.username,
+          fullName: selectedUser.fullName,
           images: fetchedImages
         });
         await loadLocalImages(selectedUser, config.saveFolder);
@@ -93,12 +93,12 @@ export default function DashboardView() {
     
     try {
       for (const u of users) {
-        setSyncingUser(u.username);
+        setSyncingUser(u.fullName);
         const fetchedImages = await window.electronAPI.getImages({ userId: u._id });
         if (fetchedImages.length > 0) {
           await window.electronAPI.downloadImages({
             folderPath: config.saveFolder,
-            username: u.username,
+            fullName: u.fullName,
             images: fetchedImages
           });
         }
@@ -123,7 +123,7 @@ export default function DashboardView() {
     }, 1000); // give the window a second to load if it's new
   };
 
-  const filteredUsers = users.filter(u => u.username.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredUsers = users.filter(u => u.fullName.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
     <div className="min-h-screen p-6 max-w-6xl mx-auto flex flex-col gap-6">
@@ -195,7 +195,7 @@ export default function DashboardView() {
                   className={`w-full text-left px-4 py-3 rounded-lg flex items-center gap-3 transition-colors mb-1 ${selectedUser?._id === u._id ? 'bg-[#c9a84c]/20 text-[#c9a84c]' : 'hover:bg-[#1a1610]'}`}
                 >
                   <Users className="w-5 h-5 opacity-70" />
-                  <span className="font-medium">{u.username}</span>
+                  <span className="font-medium">{u.fullName}</span>
                 </button>
               ))
             )}
@@ -212,7 +212,7 @@ export default function DashboardView() {
             </div>
           ) : (
             <div className="w-full max-w-md space-y-8">
-              <h2 className="text-3xl font-display text-[#c9a84c] mb-2">@{selectedUser.username}</h2>
+              <h2 className="text-3xl font-display text-[#c9a84c] mb-2">@{selectedUser.fullName}</h2>
               
               <div className="bg-[#1a1610] border border-[#2e281c] rounded-xl p-6">
                 <div className="flex items-center justify-between mb-4">

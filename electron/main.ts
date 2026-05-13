@@ -12,7 +12,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isDev = !app.isPackaged
 
 // Define simple Mongoose models
-const UserSchema = new mongoose.Schema({ username: String });
+const UserSchema = new mongoose.Schema({ fullName: String });
 const User = mongoose.models.User || mongoose.model('User', UserSchema);
 
 const ImageSchema = new mongoose.Schema({ 
@@ -112,12 +112,12 @@ ipcMain.handle('select-folder', async () => {
 // Define explicit types for IPC params to avoid TS errors
 interface DownloadParams {
   folderPath: string;
-  username: string;
+  fullName: string;
   images: { filename: string; url: string }[];
 }
 
-ipcMain.handle('download-images', async (event: any, { folderPath, username, images }: DownloadParams) => {
-  const userFolder = path.join(folderPath, username)
+ipcMain.handle('download-images', async (event: any, { folderPath, fullName, images }: DownloadParams) => {
+  const userFolder = path.join(folderPath, fullName)
   
   if (!fs.existsSync(userFolder)) {
     fs.mkdirSync(userFolder, { recursive: true })
@@ -189,11 +189,11 @@ ipcMain.handle('set-save-folder', async (event, folderPath) => {
 
 interface GetLocalImagesParams {
   folderPath: string;
-  username: string;
+  fullName: string;
 }
 
-ipcMain.handle('get-local-images', (event: any, { folderPath, username }: GetLocalImagesParams) => {
-  const userFolder = path.join(folderPath, username)
+ipcMain.handle('get-local-images', (event: any, { folderPath, fullName }: GetLocalImagesParams) => {
+  const userFolder = path.join(folderPath, fullName)
   if (!fs.existsSync(userFolder)) return []
   
   const files = fs.readdirSync(userFolder)
@@ -208,7 +208,7 @@ ipcMain.handle('get-local-images', (event: any, { folderPath, username }: GetLoc
 ipcMain.handle('get-users', async () => {
   try {
     const users = await User.find({}).sort({ createdAt: -1 }).lean();
-    return users.map((u: any) => ({ _id: u._id.toString(), username: u.username }));
+    return users.map((u: any) => ({ _id: u._id.toString(), fullName: u.fullName }));
   } catch (err) {
     console.error('Failed to fetch users from DB:', err);
     return [];
